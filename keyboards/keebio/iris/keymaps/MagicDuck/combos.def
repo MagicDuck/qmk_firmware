@@ -1,0 +1,57 @@
+// example include other file
+// see: https://blog.gboards.ca/2020/02/adventures-in-obscure-c-features-2020.html
+// #include "gergoplex.def"
+
+// action keys
+COMB(jk_esc, KC_ESC, KC_J, KC_K)
+COMB(df_bspc, KC_BSPC, KC_D, KC_F)
+COMB(fg_del, KC_DEL, KC_F, KC_G)
+
+// parends 
+// (
+COMB(sd_lparend, KC_LPRN, KC_S, KC_D)
+// )
+COMB(dv_lparend, KC_RPRN, KC_D, KC_V)
+// {
+COMB(xc_lcurly, KC_LCBR, KC_X, KC_C)
+// }
+COMB(cv_rcurly, KC_RCBR, KC_C, KC_V)
+// [
+COMB(ji_lsquare, KC_LBRC, KC_J, KC_I)
+// ]
+COMB(hu_rsquare, KC_RBRC, KC_H, KC_U)
+
+// other symbols
+// +
+COMB(nm_plus, KC_PLUS, KC_N, KC_M)
+// =
+COMB(kl_equal, KC_EQL, KC_K, KC_L)
+// _ 
+COMB(mcomma_underscore, KC_UNDS, KC_M, KC_COMM)
+// -
+COMB(commadot_dash, KC_MINS, KC_COMM, KC_DOT)
+// `
+COMB(vb_backquot, KC_GRV, KC_V, KC_B)
+// ~
+COMB(hj_tilde, KC_TILD, KC_H, KC_J)
+// |
+COMB(jcomma_pipe, KC_PIPE, KC_J, KC_COMM)
+// backslash
+COMB(lcomma_backslash, KC_BSLS, KC_L, KC_COMM)
+// !
+COMB(fb_exclam, KC_EXLM, KC_F, KC_B)
+// @
+COMB(sr_at, KC_AT, KC_S, KC_R)
+// #
+COMB(se_hash, KC_HASH, KC_S, KC_E)
+// $
+COMB(rg_dollar, KC_DLR, KC_R, KC_G)
+// %
+COMB(nj_percent, KC_PERC, KC_N, KC_J)
+// ^
+COMB(xd_circ, KC_CIRC, KC_X, KC_D)
+// &
+COMB(ef_circ, KC_AMPR, KC_E, KC_F)
+// *
+COMB(mk_star, KC_ASTR, KC_M, KC_K)
+
