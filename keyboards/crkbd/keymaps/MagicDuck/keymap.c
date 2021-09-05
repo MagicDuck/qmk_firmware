@@ -1,51 +1,35 @@
 #include QMK_KEYBOARD_H
 #include "keymap_combo.h" 
+#include "oneshot.h"
+#include "swapper.h"
 
-// TODO (sbadragan): should we put noop in keys we don't use on layers?
-// TODO (sbadragan): num on home row?
-// TODO (sbadragan): controls for reset, backlight on/off on a layer activated by pressing both nav & sym?
-// TODO (sbadragan): how do we do cmd-h,l to navigate windows in tmux?
-// maybe instead, we do on the rhs: space, nav, cmd & now we have easy cmd shift stuff and do enter as combo
+enum layers {
+  BASE_LAYER,
+  SYM_LAYER,
+  NAV_LAYER,
+  NUM_LAYER,
+};
 
+enum keycodes {
+  // Custom oneshot mod implementation with no timers.
+  OS_SHFT = SAFE_RANGE,
+  OS_CTRL,
+  OS_ALT,
+  OS_CMD,
 
+  SW_WIN,  // Switch to next window         (cmd-tab)
+};
 
-
-// TODO (sbadragan): use enum here??
-#define BASE_LAYER 0
-#define SYM_LAYER 1
-#define NAV_LAYER 2
-#define NUM_LAYER 3
-// #define _LOWER 1
-// #define _RAISEL 2
-// #define _RAISER 3
-// #define _ADJUST 4
-
-#define OS_HYPR OSM(MOD_HYPR)
-#define OS_LGUI OSM(MOD_LGUI)
-#define OS_LSFT OSM(MOD_LSFT)
-#define OS_LCTL OSM(MOD_LCTL)
-#define OS_LALT OSM(MOD_LALT)
+#define OSL_HYPR OSM(MOD_HYPR)
+#define OSL_LSFT OSM(MOD_LSFT)
+// #define OS_LGUI OSM(MOD_LGUI)
+// #define OS_LCTL OSM(MOD_LCTL)
+// #define OS_LALT OSM(MOD_LALT)
 
 #define OSL_SYM OSL(SYM_LAYER)
 #define OSL_NAV OSL(NAV_LAYER)
 #define OSL_NUM OSL(NUM_LAYER)
-// #define OSL_NAV MO(NAV_LAYER)
 
-// combos -------------------------------------------------------------------------------
-// enum combos {
-//   JK_ESC,
-//   DF_BSPC
-// };
-//
-// const uint16_t PROGMEM jk_combo[] = {KC_J, KC_K, COMBO_END};
-// const uint16_t PROGMEM df_combo[] = {KC_D, KC_F, COMBO_END};
-
-// combo_t key_combos[COMBO_COUNT] = {
-//   [JK_ESC] = COMBO(jk_combo, KC_ESC),
-//   [DF_BSPC] = COMBO(df_combo, KC_BSPC)
-// };
-
-// keymap -------------------------------------------------------------------------------
 #define SEL_ALL LCMD(KC_A)
 #define COPY LCMD(KC_C)
 #define PASTE LCMD(KC_V)
@@ -57,70 +41,52 @@
 #define DEL_LN LCMD(KC_DEL)
 #define BSPC_LN LCMD(KC_BSPC)
 
-// keymap -------------------------------------------------------------------------------
-
-enum custom_keycodes {
-  QWERTY = SAFE_RANGE,
-  LOWER,
-  RAISEL,
-  RAISER,
-  ADJUST,
-};
-
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [BASE_LAYER] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                               KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_PSCR,
-  //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                               KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSLS,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      KC_CAPS, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                               KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
-  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    OS_HYPR,          KC_ENT,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
-  //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                    KC_LGUI, OS_LSFT,  OSL_NAV,                   KC_ENT,  KC_SPC,  OSL_NUM
+  //├────────┼────────┼────────┼────────┼────────┼────────┼                          ┼────────┼────────┼────────┼────────┼────────┼────────┤
+     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                               KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
+  //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬                 ┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
+                                   OSL_HYPR, OSL_LSFT, OSL_NAV,                   KC_ENT,  KC_SPC,  OSL_NUM
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
   [SYM_LAYER] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     _______, _______, _______, _______, _______, _______,                            _______, _______, _______, _______, _______, _______,
-  //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      _______, KC_PERC, KC_GRV,  KC_EQL,  KC_AMPR, KC_PIPE,                            _______, KC_TILD, KC_ASTR, KC_PLUS, KC_HASH, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      _______, KC_DQT,  KC_QUOT, KC_LPRN, KC_RPRN, KC_MINS,                            KC_BSLS, KC_LBRC, KC_RBRC, KC_AT,   KC_DLR,  _______,
-  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, KC_BSLS, KC_EXLM, KC_LCBR, KC_RCBR, KC_UNDS, _______,          _______, _______, _______, _______, KC_CIRC, _______, _______,
-  //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                    _______, _______, _______,                   _______, _______, KC_NO
+  //├────────┼────────┼────────┼────────┼────────┼────────┼                          ┼────────┼────────┼────────┼────────┼────────┼────────┤
+     _______, KC_BSLS, KC_EXLM, KC_LCBR, KC_RCBR, KC_UNDS,                            _______, _______, _______, KC_CIRC, _______, _______,
+  //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬                 ┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
+                                    _______, _______, _______,                   _______, _______, _______
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
   [NAV_LAYER] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,                              KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
-  //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      _______, _______, _______, FIND,    RELOAD,  _______,                            KC_HOME, KC_PGUP, KC_PGDN, BSPC_LN, DEL_LN,  _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, OS_LCTL, OS_LALT, OS_LSFT, OS_LGUI, _______,                            KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT,  KC_END, _______,
-  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, _______, CUT,     COPY,    PASTE,   _______, _______,          _______, BSPC_WD, DEL_WD, _______, _______, _______, _______,
-  //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
+     _______, OS_CTRL, OS_ALT,  OS_SHFT, OS_CMD,  SW_WIN,                            KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT,  KC_END, _______,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼                          ┼────────┼────────┼────────┼────────┼────────┼────────┤
+     _______, _______, CUT,     COPY,    PASTE,   _______,                            BSPC_WD, KC_BSPC, KC_DEL,  DEL_WD,  _______, _______,
+  //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬                 ┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                     _______, _______, _______,                   _______, _______, _______
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
   [NUM_LAYER] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,                              KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
-  //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      _______, _______, KC_1,    KC_2,    KC_3,    _______,                            _______, _______, _______, _______, _______, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, KC_0,    KC_4,    KC_5,    KC_6,    KC_DOT,                            _______, _______, _______, _______, _______, _______,
-  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, _______, KC_7,    KC_8,    KC_9,    _______, _______,          _______, _______, _______, _______, _______, _______, _______,
-  //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
+     _______, KC_0,    KC_4,    KC_5,    KC_6,    _______,                            _______, _______, _______, _______, _______, _______,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼                          ┼────────┼────────┼────────┼────────┼────────┼────────┤
+     _______, _______, KC_7,    KC_8,    KC_9,    _______,                            _______, _______, _______, _______, _______, _______,
+  //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬                 ┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                     _______, _______, _______,                   _______, _______, _______
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
@@ -168,3 +134,60 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // )
 };
 
+bool is_oneshot_cancel_key(uint16_t keycode) {
+    switch (keycode) {
+    case OSL_NAV:
+    case OSL_NUM:
+        return true;
+    default:
+        return false;
+    }
+}
+
+bool is_oneshot_ignored_key(uint16_t keycode) {
+    switch (keycode) {
+    case OSL_NAV:
+    case OSL_NUM:
+    case KC_LSFT:
+    case OS_SHFT:
+    case OS_CTRL:
+    case OS_ALT:
+    case OS_CMD:
+        return true;
+    default:
+        return false;
+    }
+}
+
+bool sw_win_active = false;
+
+oneshot_state os_shft_state = os_up_unqueued;
+oneshot_state os_ctrl_state = os_up_unqueued;
+oneshot_state os_alt_state = os_up_unqueued;
+oneshot_state os_cmd_state = os_up_unqueued;
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    update_swapper(
+        &sw_win_active, KC_LGUI, KC_TAB, SW_WIN,
+        keycode, record
+    );
+
+    update_oneshot(
+        &os_shft_state, KC_LSFT, OS_SHFT,
+        keycode, record
+    );
+    update_oneshot(
+        &os_ctrl_state, KC_LCTL, OS_CTRL,
+        keycode, record
+    );
+    update_oneshot(
+        &os_alt_state, KC_LALT, OS_ALT,
+        keycode, record
+    );
+    update_oneshot(
+        &os_cmd_state, KC_LCMD, OS_CMD,
+        keycode, record
+    );
+
+    return true;
+}
