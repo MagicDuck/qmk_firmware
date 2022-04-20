@@ -20,3 +20,4 @@ LTO_ENABLE = yes
 
 SRC += oneshot.c
 SRC += swapper.c
+SRC += repeat.c
