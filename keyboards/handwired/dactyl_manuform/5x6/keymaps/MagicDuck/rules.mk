@@ -17,6 +17,7 @@ RGBLIGHT_STARTUP_ANIMATION = no
 
 EXTRAKEY_ENABLE = yes
 LTO_ENABLE = yes
+DEFERRED_EXEC_ENABLE = yes
 
 SRC += oneshot.c
 SRC += swapper.c
