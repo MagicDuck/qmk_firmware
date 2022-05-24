@@ -12,13 +12,14 @@ enum layers {
 };
 
 enum keycodes {
-  // Custom oneshot mod implementation with no timers.
+  // Custom oneshot mod implementation.
   OS_SHFT = SAFE_RANGE,
   OS_CTRL,
   OS_ALT,
   OS_CMD,
 
   SW_WIN,  // Switch to next window         (cmd-tab)
+  SW_TAB,  // Switch to next tab            (ctrl-tab)
   REPEAT
 };
 
@@ -36,6 +37,7 @@ enum keycodes {
 #define COPY LCMD(KC_C)
 #define PASTE LCMD(KC_V)
 #define CUT LCMD(KC_X)
+#define UNDO LCMD(KC_Z)
 #define RELOAD LCMD(KC_R)
 #define FIND LCMD(KC_F)
 #define DEL_WD LALT(KC_DEL)
@@ -62,8 +64,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                       //├────────┼────────┼                          ├────────┼────────┼
                                          KC_LCTRL, OSL_NAV,                           OSL_SYM, KC_LALT,
                                       //├────────┼────────┼                          ├────────┼────────┼
-                                         // OSL_HYPR, OSL_HYPR,                          OSL_HYPR, KC_PGDN
-                                         OSL_HYPR, OSL_HYPR,                          RESET, KC_PGDN
+                                         OSL_HYPR, OSL_HYPR,                          OSL_HYPR, KC_PGDN
+                                         // OSL_HYPR, OSL_HYPR,                          RESET, KC_PGDN
                                       //└────────┴────────┘                          └────────┴────────┘
   ),
 
@@ -92,11 +94,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
      RESET,   _______, _______, _______, _______, _______,                            _______, _______, _______, _______, _______, RESET,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, _______, FIND,   OSL_HYPR, RELOAD,  REPEAT,                             KC_HOME,  KC_PGDN, KC_PGUP, BSPC_LN, DEL_LN,  _______,
+     _______, _______,   FIND,   OSL_HYPR, RELOAD,  REPEAT,                           KC_HOME,  KC_PGDN, KC_PGUP, BSPC_LN, DEL_LN,  _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, OS_SHFT, OS_ALT,  OS_CTRL, OS_CMD,  SW_WIN,                            KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT,  KC_END, _______,
+     _______, OS_SHFT, OS_ALT,  OS_CTRL, OS_CMD,  SW_WIN,                            KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT,  SW_TAB,  _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┼                          ┼────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, _______, CUT,     COPY,    PASTE,   _______,                            BSPC_WD, KC_BSPC, KC_DEL,  DEL_WD,  _______, _______,
+     _______, UNDO,    CUT,     COPY,    PASTE,   KC_TAB,                            BSPC_WD, KC_BSPC, KC_DEL,  DEL_WD,   _______, _______,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬                 ┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                       _______, _______,                                                                _______, _______,
                   // └────────┴────────┘                                                              └────────┴────────┘
@@ -151,6 +153,7 @@ bool is_oneshot_ignored_key(uint16_t keycode) {
 }
 
 bool sw_win_active = false;
+bool sw_tab_active = false;
 
 oneshot_mod_state os_shft_state = { .mod = KC_LSFT, .state = os_up_unqueued };
 oneshot_mod_state os_ctrl_state = { .mod = KC_LCTRL, .state = os_up_unqueued };
@@ -161,6 +164,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // window swapper
     update_swapper(
         &sw_win_active, KC_LGUI, KC_TAB, SW_WIN,
+        keycode, record
+    );
+    update_swapper(
+        &sw_tab_active, KC_LCTL, KC_TAB, SW_TAB,
         keycode, record
     );
 
