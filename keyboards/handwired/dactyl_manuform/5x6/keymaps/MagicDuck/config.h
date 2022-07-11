@@ -34,7 +34,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // Apply the modifier on keys that are tapped during a short hold of a modtap
 #define PERMISSIVE_HOLD
 
-#define ONESHOT_TIMEOUT 2000  /* Time (in ms) before the one shot key is released */
+#define ONESHOT_TIMEOUT 3000  /* Time (in ms) before the one shot key is released */
 
 // #define AUTO_SHIFT_TIMEOUT 200
 // #define NO_AUTO_SHIFT_SPECIAL

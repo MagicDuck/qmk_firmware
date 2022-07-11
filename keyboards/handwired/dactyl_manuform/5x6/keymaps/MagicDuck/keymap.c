@@ -20,12 +20,13 @@ enum keycodes {
 
   SW_WIN,  // Switch to next window         (cmd-tab)
   SW_TAB,  // Switch to next tab            (ctrl-tab)
-  REPEAT
+  REPEAT,
+  CODE_BLK
 };
 
 #define OSL_HYPR OSM(MOD_HYPR)
 #define OSL_LSFT OSM(MOD_LSFT)
-// #define OS_LGUI OSM(MOD_LGUI)
+#define OS_LGUI OSM(MOD_LGUI)
 // #define OS_LCTL OSM(MOD_LCTL)
 // #define OS_LALT OSM(MOD_LALT)
 
@@ -62,22 +63,28 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                       //┌────────┬────────┐                          ┌────────┬────────┐ 
                                          OSL_LSFT, _______,                            _______,  KC_SPC,
                                       //├────────┼────────┼                          ├────────┼────────┼
-                                         KC_LCTRL, OSL_NAV,                           OSL_SYM, KC_LALT,
+                                         KC_LCTRL, OSL_NAV,                           OSL_SYM, KC_LCTRL,
                                       //├────────┼────────┼                          ├────────┼────────┼
-                                         OSL_HYPR, OSL_HYPR,                          OSL_HYPR, KC_PGDN
-                                         // OSL_HYPR, OSL_HYPR,                          RESET, KC_PGDN
+                                         OSL_HYPR, KC_LGUI,                           KC_LGUI, OSL_HYPR
                                       //└────────┴────────┘                          └────────┴────────┘
+                                      // //┌────────┬────────┐                          ┌────────┬────────┐ 
+                                      //    OSL_LSFT, _______,                            _______,  KC_SPC,
+                                      // //├────────┼────────┼                          ├────────┼────────┼
+                                      //    KC_LCTRL, OSL_NAV,                           OSL_SYM, KC_LCTRL,
+                                      // //├────────┼────────┼                          ├────────┼────────┼
+                                      //    KC_LGUI, OSL_HYPR,                           KC_LALT, KC_LGUI
+                                      // //└────────┴────────┘                          └────────┴────────┘
   ),
 
   [SYM_LAYER] = LAYOUT_5x6(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     RESET,   _______, _______, _______, _______, _______,                            _______, _______, _______, _______, _______, RESET,
+     _______, _______, _______, _______, _______, _______,                            _______, _______, _______, _______, _______, RESET,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, KC_PERC, KC_GRV,  KC_EQL,  KC_AMPR, KC_PIPE,                            _______, KC_TILD, KC_ASTR, KC_PLUS, KC_HASH, _______,
+     _______, KC_PERC, KC_GRV,  KC_EQL,  KC_AMPR, KC_PIPE,                            KC_DLR,  KC_TILD, KC_ASTR, KC_PLUS, KC_HASH, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, KC_DQT,  KC_QUOT, KC_LPRN, KC_RPRN, KC_MINS,                            KC_AT,   KC_LBRC, KC_RBRC, KC_UNDS, KC_DLR,  _______,
+     _______, KC_DQT,  KC_QUOT, KC_LPRN, KC_RPRN, KC_MINS,                            KC_AT,   KC_LBRC,  KC_RBRC, KC_UNDS,_______ , _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┼                          ┼────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, KC_BSLS, KC_EXLM, KC_LCBR, KC_RCBR, KC_TAB,                             KC_CIRC, KC_BSLS, KC_LT,   KC_GT,   KC_QUES, _______,
+     _______, KC_BSLS, KC_EXLM, KC_LCBR, KC_RCBR, KC_TAB,                             KC_CIRC, CODE_BLK, KC_LT,   KC_GT,   KC_QUES, _______,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬                 ┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                       _______, _______,                                                                _______, _______,
                   // └────────┴────────┘                                                              └────────┴────────┘
@@ -92,9 +99,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   
   [NAV_LAYER] = LAYOUT_5x6(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     RESET,   _______, _______, _______, _______, _______,                            _______, _______, _______, _______, _______, RESET,
+     RESET,   _______, _______, _______, _______, _______,                            _______, _______, _______, _______, _______, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, _______,   FIND,   OSL_HYPR, RELOAD,  REPEAT,                           KC_HOME,  KC_PGDN, KC_PGUP, BSPC_LN, DEL_LN,  _______,
+     _______, _______, _______,OSL_HYPR, RELOAD,  REPEAT,                           KC_HOME,  KC_PGDN, KC_PGUP, BSPC_LN, DEL_LN,  _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      _______, OS_SHFT, OS_ALT,  OS_CTRL, OS_CMD,  SW_WIN,                            KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT,  SW_TAB,  _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┼                          ┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -152,6 +159,16 @@ bool is_oneshot_ignored_key(uint16_t keycode) {
     }
 }
 
+void process_snippets(uint16_t keycode, keyrecord_t *record) {
+    if (record->event.pressed) {
+        switch (keycode) {
+        case CODE_BLK:
+            SEND_STRING("```\n\n```" SS_TAP(X_UP));
+            break;
+        }
+    } 
+}
+
 bool sw_win_active = false;
 bool sw_tab_active = false;
 
@@ -191,6 +208,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     // repeat last key
     process_repeat_key(REPEAT, keycode, record);
+
+    // snippets
+    process_snippets(keycode, record);
 
     return true;
 }
