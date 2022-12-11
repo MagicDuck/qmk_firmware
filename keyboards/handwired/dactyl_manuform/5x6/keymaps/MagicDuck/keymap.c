@@ -24,14 +24,18 @@ enum keycodes {
   CODE_BLK
 };
 
-#define OSL_HYPR OSM(MOD_HYPR)
+#define OSM_HYPR OSM(MOD_HYPR)
 #define OSL_LSFT OSM(MOD_LSFT)
 #define OS_LGUI OSM(MOD_LGUI)
 // #define OS_LCTL OSM(MOD_LCTL)
 // #define OS_LALT OSM(MOD_LALT)
 
-#define OSL_SYM OSL(SYM_LAYER)
-#define OSL_NAV OSL(NAV_LAYER)
+// #define OSL_SYM OSL(SYM_LAYER)
+// #define SYM MO(SYM_LAYER)
+#define SYM OSL(SYM_LAYER)
+// #define NAV MO(NAV_LAYER)
+#define NAV OSL(NAV_LAYER)
+// #define OSL_NAV OSL(NAV_LAYER)
 #define OSL_NUM OSL(NUM_LAYER)
 
 #define SEL_ALL LCMD(KC_A)
@@ -56,16 +60,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      KC_CAPS, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                               KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
   //├────────┼────────┼────────┼────────┼────────┼────────┼                          ┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                               KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
+     _______, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                               KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, _______,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴                          ┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                       KC_LEFT, KC_RIGHT,                                                               KC_UP,   KC_DOWN,
                   // └────────┴────────┘                                                              └────────┴────────┘
                                       //┌────────┬────────┐                          ┌────────┬────────┐ 
-                                         OSL_LSFT, _______,                            _______,  KC_SPC,
+                                         KC_LSFT, _______,                            _______,  KC_SPC,
                                       //├────────┼────────┼                          ├────────┼────────┼
-                                         KC_LCTRL, OSL_NAV,                           OSL_SYM, KC_LCTRL,
+                                         KC_LCTRL, NAV,                               SYM,     KC_LCTRL,
                                       //├────────┼────────┼                          ├────────┼────────┼
-                                         OSL_HYPR, KC_LGUI,                           KC_LGUI, OSL_HYPR
+                                         KC_LGUI, KC_HYPR,                            KC_HYPR, KC_LGUI
                                       //└────────┴────────┘                          └────────┴────────┘
                                       // //┌────────┬────────┐                          ┌────────┬────────┐ 
                                       //    OSL_LSFT, _______,                            _______,  KC_SPC,
@@ -80,9 +84,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
      _______, _______, _______, _______, _______, _______,                            _______, _______, _______, _______, _______, RESET,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, KC_PERC, KC_GRV,  KC_EQL,  KC_AMPR, KC_PIPE,                            KC_DLR,  KC_TILD, KC_ASTR, KC_PLUS, KC_HASH, _______,
+     _______, KC_PERC, KC_GRV,  KC_EQL,  KC_AMPR, KC_PIPE,                            _______,  KC_TILD, KC_ASTR, KC_PLUS, KC_HASH, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, KC_DQT,  KC_QUOT, KC_LPRN, KC_RPRN, KC_MINS,                            KC_AT,   KC_LBRC,  KC_RBRC, KC_UNDS,_______ , _______,
+     _______, KC_DQT,  KC_QUOT, KC_LPRN, KC_RPRN, KC_MINS,                            KC_AT,   KC_LBRC,  KC_RBRC, KC_UNDS, KC_DLR , _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┼                          ┼────────┼────────┼────────┼────────┼────────┼────────┤
      _______, KC_BSLS, KC_EXLM, KC_LCBR, KC_RCBR, KC_TAB,                             KC_CIRC, CODE_BLK, KC_LT,   KC_GT,   KC_QUES, _______,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬                 ┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
@@ -91,7 +95,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                       //┌────────┬────────┐                          ┌────────┬────────┐ 
                                          KC_SPC,  _______,                            _______, _______,
                                       //├────────┼────────┼                          ├────────┼────────┼
-                                         _______, KC_ENT,                             _______, _______,
+                                         _______, _______,                            _______, _______,
                                       //├────────┼────────┼                          ├────────┼────────┼
                                          _______, _______,                            _______, _______
                                       //└────────┴────────┘                          └────────┴────────┘
@@ -101,7 +105,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
      RESET,   _______, _______, _______, _______, _______,                            _______, _______, _______, _______, _______, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, _______, _______,OSL_HYPR, RELOAD,  REPEAT,                           KC_HOME,  KC_PGDN, KC_PGUP, BSPC_LN, DEL_LN,  _______,
+     _______, _______, _______, OSM_HYPR, RELOAD,  REPEAT,                           KC_HOME,  KC_PGDN, KC_PGUP, BSPC_LN, DEL_LN,  _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      _______, OS_SHFT, OS_ALT,  OS_CTRL, OS_CMD,  SW_WIN,                            KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT,  SW_TAB,  _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┼                          ┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -135,7 +139,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 bool is_oneshot_cancel_key(uint16_t keycode) {
     switch (keycode) {
     // case OSL_NAV:
-    case OSL_HYPR:
+    case KC_HYPR:
+    case OSM_HYPR:
+    case KC_LGUI:
+    case KC_LCTRL:
     case OSL_NUM:
         return true;
     default:
@@ -145,8 +152,8 @@ bool is_oneshot_cancel_key(uint16_t keycode) {
 
 bool is_oneshot_ignored_key(uint16_t keycode) {
     switch (keycode) {
-    case OSL_NAV:
-    case OSL_SYM:
+    case NAV:
+    case SYM:
     case OSL_NUM:
     case KC_LSFT:
     case OS_SHFT:
