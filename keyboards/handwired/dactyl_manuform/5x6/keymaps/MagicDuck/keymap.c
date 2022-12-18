@@ -72,14 +72,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                       //┌────────┬────────┐                          ┌────────┬────────┐ 
                                          KC_LSFT, _______,                            _______,  KC_SPC,
                                       //├────────┼────────┼                          ├────────┼────────┼
-                                         KC_LCTRL, NAV,                               SYM,     KC_LCTRL,
+                                         KC_LCTL, NAV,                                SYM,     KC_LCTL,
                                       //├────────┼────────┼                          ├────────┼────────┼
                                          KC_LGUI, KC_HYPR,                            KC_HYPR, KC_LGUI
                                       //└────────┴────────┘                          └────────┴────────┘
                                       // //┌────────┬────────┐                          ┌────────┬────────┐ 
                                       //    OSL_LSFT, _______,                            _______,  KC_SPC,
                                       // //├────────┼────────┼                          ├────────┼────────┼
-                                      //    KC_LCTRL, OSL_NAV,                           OSL_SYM, KC_LCTRL,
+                                      //    KC_LCTL, OSL_NAV,                           OSL_SYM, KC_LCTL,
                                       // //├────────┼────────┼                          ├────────┼────────┼
                                       //    KC_LGUI, OSL_HYPR,                           KC_LALT, KC_LGUI
                                       // //└────────┴────────┘                          └────────┴────────┘
@@ -87,7 +87,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [SYM_LAYER] = LAYOUT_5x6(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     _______, _______, _______, _______, _______, _______,                            _______, _______, _______, _______, _______, RESET,
+     _______, _______, _______, _______, _______, _______,                            _______, _______, _______, _______, _______, QK_BOOT,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      _______, KC_PERC, KC_GRV,  KC_EQL,  KC_AMPR, KC_PIPE,                            _______,  KC_TILD, KC_ASTR, KC_PLUS, KC_HASH, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
@@ -108,7 +108,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   
   [NAV_LAYER] = LAYOUT_5x6(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     RESET,   _______, _______, _______, _______, _______,                            _______, _______, _______, _______, _______, _______,
+     QK_BOOT,   _______, _______, _______, _______, _______,                            _______, _______, _______, _______, _______, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      _______, _______, _______, OSM_HYPR, RELOAD,  REPEAT,                           KC_HOME,  KC_PGDN, KC_PGUP, BSPC_LN, DEL_LN,  _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
@@ -147,7 +147,7 @@ bool is_oneshot_cancel_key(uint16_t keycode) {
     case KC_HYPR:
     case OSM_HYPR:
     case KC_LGUI:
-    case KC_LCTRL:
+    case KC_LCTL:
     case OSL_NUM:
         return true;
     default:
@@ -185,7 +185,7 @@ bool sw_win_active = false;
 bool sw_tab_active = false;
 
 oneshot_mod_state os_shft_state = { .mod = KC_LSFT, .state = os_up_unqueued };
-oneshot_mod_state os_ctrl_state = { .mod = KC_LCTRL, .state = os_up_unqueued };
+oneshot_mod_state os_ctrl_state = { .mod = KC_LCTL, .state = os_up_unqueued };
 oneshot_mod_state os_alt_state = { .mod = KC_LALT, .state = os_up_unqueued };
 oneshot_mod_state os_cmd_state = { .mod = KC_LCMD, .state = os_up_unqueued };
 
