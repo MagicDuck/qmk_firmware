@@ -38,6 +38,11 @@ enum keycodes {
 // #define OSL_NAV OSL(NAV_LAYER)
 #define OSL_NUM OSL(NUM_LAYER)
 
+// #define SFT_A LSFT_T(KC_A)
+// #define SFT_SCLN LSFT_T(KC_SCLN)
+// #define SFT_V LSFT_T(KC_V)
+// #define SFT_M LSFT_T(KC_M)
+
 #define SEL_ALL LCMD(KC_A)
 #define COPY LCMD(KC_C)
 #define PASTE LCMD(KC_V)
@@ -116,7 +121,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                       //┌────────┬────────┐                          ┌────────┬────────┐ 
                                          _______, _______,                            _______, _______,
                                       //├────────┼────────┼                          ├────────┼────────┼
-                                         _______, _______,                            KC_ENT,  _______,
+                                         _______, KC_ESC,                            KC_ENT,  _______,
                                       //├────────┼────────┼                          ├────────┼────────┼
                                          _______, _______,                            _______, _______
                                       //└────────┴────────┘                          └────────┴────────┘
