@@ -24,7 +24,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define COMBO_TERM 50 
 
 #define TAPPING_FORCE_HOLD
-#define TAPPING_TERM 200
+// #define TAPPING_TERM 200
+#define TAPPING_TERM 100
 // Prevent normal rollover on alphas from accidentally triggering mods.
 #define IGNORE_MOD_TAP_INTERRUPT
 
@@ -35,6 +36,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define PERMISSIVE_HOLD
 
 #define ONESHOT_TIMEOUT 3000  /* Time (in ms) before the one shot key is released */
+
+#define DOUBLE_TAP_SHIFT_TURNS_ON_CAPS_WORD
 
 // #define AUTO_SHIFT_TIMEOUT 200
 // #define NO_AUTO_SHIFT_SPECIAL
