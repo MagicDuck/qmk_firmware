@@ -4,7 +4,7 @@
 
 // Represents the four states a oneshot key can be in
 typedef enum {
-    os_up_unqueued,
+    os_up_unqueued = 1,
     os_up_queued,
     os_down_unused,
     os_down_used,
