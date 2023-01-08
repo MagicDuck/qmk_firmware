@@ -1,17 +1,13 @@
 #include "oneshot.h"
 
-uint16_t immediateOneshotKey = 0;
-
 void cancelMod(uint16_t mod) {
     unregister_mods(MOD_BIT(mod));
-    immediateOneshotKey = 0;
 #ifdef CONSOLE_ENABLE
     uprintf("canceled mod: %u\n", get_mods());
 #endif
 }
 void activateMod(uint16_t mod) {
     register_mods(MOD_BIT(mod));
-    immediateOneshotKey = 0;
 #ifdef CONSOLE_ENABLE
     uprintf("activated mod %u\n", get_mods());
 #endif
@@ -62,22 +58,6 @@ void update_oneshot(oneshot_mod_state *mod_state, uint16_t trigger, uint16_t key
                 *state = os_up_unqueued;
                 cancelMod(mod);
                 return;
-            }
-
-            // Note: Even with this little guard in place, we still have issues when state is os_down_used, that is when the mod has not keyupped
-            // In order to perfectly fix it, we would need to make it a dedicated onseshot only key, for example a shift that does only
-            // oneshot, no hold, then cancel the mod on both os_down_unused and os_up_queued, as well as clear any layers so we don't end up
-            // typing symbols
-            if (!is_oneshot_ignored_key(keycode) && *state == os_up_queued) {
-                if (immediateOneshotKey == 0) {
-                    immediateOneshotKey = keycode;
-                } else if (keycode == immediateOneshotKey) {
-                    // do nothing
-                } else {
-                    // 2 or more keydowns in a row, happens with fast typing
-                    // del_mods(MOD_BIT(mod));
-                    cancelMod(mod);
-                }
             }
         } else {
             if (!is_oneshot_ignored_key(keycode)) {
