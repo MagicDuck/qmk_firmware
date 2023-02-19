@@ -4,9 +4,9 @@
 
 // action keys
 COMB(jk_esc, KC_ESC, KC_J, KC_K)
-// COMB(sd_sft, KC_LSFT, KC_S, KC_D)
-// COMB(kl_sft, KC_RSFT, KC_K, KC_L)
-// COMB(df_enter, KC_ENT, KC_D, KC_F)
+//COMB(sd_sft, KC_LSFT, KC_S, KC_D)
+//COMB(kl_sft, KC_RSFT, KC_K, KC_L)
+//COMB(df_enter, KC_ENT, KC_D, KC_F)
 //COMB(df_bspc, KC_BSPC, KC_D, KC_F)
 //COMB(fg_del, KC_DEL, KC_F, KC_G)
 
