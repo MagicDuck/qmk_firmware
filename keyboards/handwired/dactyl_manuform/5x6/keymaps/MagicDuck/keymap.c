@@ -76,8 +76,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                       //├────────┼────────┼                          ├────────┼────────┼
                                          KC_LCTL, NAV,                                SYM,     KC_LCTL,
                                       //├────────┼────────┼                          ├────────┼────────┼
-                                         KC_LGUI, KC_HYPR,                            KC_ENT, KC_LGUI
-                                         /* KC_LGUI, KC_HYPR,                            KC_HYPR, KC_LGUI */
+                                         /* KC_LGUI, KC_HYPR,                            KC_ENT, KC_LGUI */
+                                         KC_LGUI, KC_HYPR,                            KC_HYPR, KC_LGUI
                                       //└────────┴────────┘                          └────────┴────────┘
                                       // //┌────────┬────────┐                          ┌────────┬────────┐ 
                                       //    OSL_LSFT, _______,                            _______,  KC_SPC,
@@ -101,7 +101,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                       _______, _______,                                                                _______, _______,
                   // └────────┴────────┘                                                              └────────┴────────┘
                                       //┌────────┬────────┐                          ┌────────┬────────┐ 
-                                         KC_TAB,  _______,                            _______, _______,
+                                         _______,  _______,                            _______, _______,
                                       //├────────┼────────┼                          ├────────┼────────┼
                                          _______, NAV,                               _______, _______,
                                       //├────────┼────────┼                          ├────────┼────────┼
@@ -122,10 +122,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                       _______, _______,                                                                _______, _______,
                   // └────────┴────────┘                                                              └────────┴────────┘
                                       //┌────────┬────────┐                          ┌────────┬────────┐ 
-                                         _______, _______,                            _______, _______,
+                                         _______, _______,                            _______, KC_TAB,
                                       //├────────┼────────┼                          ├────────┼────────┼
-                                         /* _______, _______,                            KC_ENT,  _______, */
-                                         _______, _______,                            _______,  _______,
+                                         _______, _______,                            KC_ENT,  _______,
+                                         /* _______, _______,                            _______,  _______, */
                                       //├────────┼────────┼                          ├────────┼────────┼
                                          _______, _______,                            _______, _______
                                       //└────────┴────────┘                          └────────┴────────┘
@@ -212,4 +212,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     process_snippets(keycode, record);
 
     return true;
+}
+
+bool combo_should_trigger(uint16_t combo_index, combo_t *combo, uint16_t keycode, keyrecord_t *record) {
+    if (layer_state_is(BASE_LAYER)) {
+        return true;
+    }
+    return false;
 }

@@ -15,13 +15,12 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #pragma once
 
 #define USE_SERIAL
 #define MASTER_LEFT
 
-#define COMBO_TERM 50 
+#define COMBO_TERM 50
 
 #define TAPPING_FORCE_HOLD
 #define TAPPING_TERM 200
@@ -34,7 +33,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // Apply the modifier on keys that are tapped during a short hold of a modtap
 #define PERMISSIVE_HOLD
 
-#define ONESHOT_TIMEOUT 3000  /* Time (in ms) before the one shot key is released */
+#define ONESHOT_TIMEOUT 3000 /* Time (in ms) before the one shot key is released */
+#define COMBO_SHOULD_TRIGGER
 
 #define DOUBLE_TAP_SHIFT_TURNS_ON_CAPS_WORD
 
@@ -46,7 +46,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define DISABLE_RGB_MATRIX_ALPHAS_MODS
 #define DISABLE_RGB_MATRIX_GRADIENT_UP_DOWN
 #define DISABLE_RGB_MATRIX_BREATHING
-#define DISABLE_RGB_MATRIX_CYCLE_ALL 
+#define DISABLE_RGB_MATRIX_CYCLE_ALL
 #define DISABLE_RGB_MATRIX_CYCLE_LEFT_RIGHT
 #define DISABLE_RGB_MATRIX_CYCLE_UP_DOWN
 #define DISABLE_RGB_MATRIX_CYCLE_OUT_IN
@@ -71,4 +71,3 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define DISABLE_RGB_MATRIX_MULTISPLASH
 #define DISABLE_RGB_MATRIX_SOLID_SPLASH
 #define DISABLE_RGB_MATRIX_SOLID_MULTISPLASH
-
