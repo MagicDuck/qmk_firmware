@@ -6,7 +6,7 @@ AUTO_SHIFT_ENABLE = no
 COMBO_ENABLE = yes
 CAPS_WORD_ENABLE = yes
 
-CONSOLE_ENABLE    = no         # Console for debug(+400)
+CONSOLE_ENABLE    = no         # Console for debug(+400), run with `qmk console`
 COMMAND_ENABLE    = no        # Commands for debug and configuration
 AUDIO_ENABLE      = no
 BACKLIGHT_ENABLE  = no

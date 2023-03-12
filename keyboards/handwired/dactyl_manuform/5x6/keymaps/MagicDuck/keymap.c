@@ -186,6 +186,17 @@ void process_snippets(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
+void process_layer(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        // turn off sym layer when NAV button is pressed, this is to avoid getting stuck
+        // in SYM layer when pressing SYM+NAV+key
+        case NAV:
+            if (record->event.pressed) {
+                layer_off(SYM_LAYER);
+            }
+    }
+}
+
 bool sw_win_active = false;
 bool sw_tab_active = false;
 
@@ -210,6 +221,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     // snippets
     process_snippets(keycode, record);
+
+    process_layer(keycode, record);
 
     return true;
 }

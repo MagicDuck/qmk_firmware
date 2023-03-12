@@ -34,6 +34,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define PERMISSIVE_HOLD
 
 #define ONESHOT_TIMEOUT 3000 /* Time (in ms) before the one shot key is released */
+#define ONESHOT_TAP_TOGGLE 10
 #define COMBO_SHOULD_TRIGGER
 
 #define DOUBLE_TAP_SHIFT_TURNS_ON_CAPS_WORD
