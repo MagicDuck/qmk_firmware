@@ -1,60 +1,32 @@
 // example include other file
 // see: https://blog.gboards.ca/2020/02/adventures-in-obscure-c-features-2020.html
-// #include "gergoplex.def"
 
 // action keys
-COMB(jk_esc, KC_ESC, KC_J, KC_K)
-//COMB(sd_sft, KC_LSFT, KC_S, KC_D)
-//COMB(kl_sft, KC_RSFT, KC_K, KC_L)
-//COMB(df_enter, KC_ENT, KC_D, KC_F)
-//COMB(df_bspc, KC_BSPC, KC_D, KC_F)
-//COMB(fg_del, KC_DEL, KC_F, KC_G)
+COMB(esc, KC_ESC, KC_J, KC_K)
 
-//// parends 
-//// (
-//COMB(sd_lparend, KC_LPRN, KC_S, KC_D)
-//// )
-//COMB(dv_lparend, KC_RPRN, KC_D, KC_V)
-//// {
-//COMB(xc_lcurly, KC_LCBR, KC_X, KC_C)
-//// }
-//COMB(cv_rcurly, KC_RCBR, KC_C, KC_V)
-//// [
-//COMB(ji_lsquare, KC_LBRC, KC_J, KC_I)
-//// ]
-//COMB(hu_rsquare, KC_RBRC, KC_H, KC_U)
-//
-//// other symbols
-//// +
-//COMB(nm_plus, KC_PLUS, KC_N, KC_M)
-//// =
-//COMB(kl_equal, KC_EQL, KC_K, KC_L)
-//// _ 
-//COMB(mcomma_underscore, KC_UNDS, KC_M, KC_COMM)
-//// -
-//COMB(commadot_dash, KC_MINS, KC_COMM, KC_DOT)
-//// `
-//COMB(vb_backquot, KC_GRV, KC_V, KC_B)
-//// ~
-//COMB(hj_tilde, KC_TILD, KC_H, KC_J)
-//// |
-//COMB(jcomma_pipe, KC_PIPE, KC_J, KC_COMM)
-//// backslash
-//COMB(lcomma_backslash, KC_BSLS, KC_L, KC_COMM)
-//// !
-//COMB(fb_exclam, KC_EXLM, KC_F, KC_B)
-//// @
-//COMB(sr_at, KC_AT, KC_S, KC_R)
-//// #
-//COMB(sf_hash, KC_HASH, KC_S, KC_F)
-//// $
-//COMB(rg_dollar, KC_DLR, KC_R, KC_G)
-//// %
-//COMB(nj_percent, KC_PERC, KC_N, KC_J)
-//// ^
-//COMB(xd_circ, KC_CIRC, KC_X, KC_D)
-//// &
-//COMB(sv_circ, KC_AMPR, KC_S, KC_V)
-//// *
-//COMB(mk_star, KC_ASTR, KC_M, KC_K)
-//
+/* (  <- dv */ COMB(leftParend, KC_LPRN, KC_D, KC_V)
+/* )  <- km */ COMB(rightParend, KC_RPRN, KC_K, KC_M)
+/* {  <- cv */ COMB(leftCurly, KC_LCBR, KC_C, KC_V)
+/* }  <- m, */ COMB(rightCurly, KC_RCBR, KC_M, KC_COMM)
+/* [  <- xc */ COMB(leftSquare, KC_LBRC, KC_X, KC_C)
+/* ]  <- ,. */ COMB(rightSquare, KC_RBRC, KC_COMM, KC_DOT)
+/* <  <- fg */ COMB(leftAngle, KC_LT, KC_F, KC_G)
+/* >  <- hj */ COMB(rightAngle, KC_GT, KC_H, KC_J)
+/* =  <- kl */ COMB(equal, KC_EQL, KC_K, KC_L)
+/* _  <- df */ COMB(underscore, KC_UNDS, KC_D, KC_F)
+/* -  <- ef */ COMB(dash, KC_MINS, KC_E, KC_F)
+/* *  <- ji */ COMB(star, KC_ASTR, KC_J, KC_I)
+/* `  <- yu */ COMB(backtick, KC_GRV, KC_Y, KC_U)
+/* +  <- rt */ COMB(plus, KC_PLUS, KC_R, KC_T)
+/* !  <- vb */ COMB(exclam, KC_EXLM, KC_V, KC_B)
+/* ~  <- nm */ COMB(tilda, KC_TILD, KC_N, KC_M)
+/* #  <- fb */ COMB(hash, KC_HASH, KC_F, KC_B)
+/* $  <- jn */ COMB(dollar, KC_DLR, KC_J, KC_N)
+/* &  <- rg */ COMB(ampersand, KC_AMPR, KC_R, KC_G)
+/* |  <- hu */ COMB(pipe, KC_PIPE, KC_H, KC_U)
+
+/* @  <- 3r */ COMB(at, KC_AT, KC_3, KC_R)
+/* ^  <- 4t */ COMB(circumflex, KC_CIRC, KC_4, KC_T)
+/* %  <- 7y */ COMB(percent, KC_PERC, KC_7, KC_Y)
+/* \  <- 8u */ COMB(backslash, KC_BSLS, KC_8, KC_U)
+
