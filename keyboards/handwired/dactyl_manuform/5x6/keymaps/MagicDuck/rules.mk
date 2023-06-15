@@ -3,7 +3,7 @@ OLED_DRIVER_ENABLE  = no
 RGBLIGHT_ENABLE = no
 RGB_MATRIX_ENABLE = no
 AUTO_SHIFT_ENABLE = no
-COMBO_ENABLE = yes
+COMBO_ENABLE = false
 CAPS_WORD_ENABLE = yes
 
 CONSOLE_ENABLE    = no         # Console for debug(+400), run with `qmk console`
