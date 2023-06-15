@@ -1,13 +1,16 @@
 #include "oneshot.h"
 
-void cancelMod(uint16_t mod) {
-    unregister_mods(MOD_BIT(mod));
+void cancelMod(oneshot_mod_state *mod_state) {
+    unregister_mods(MOD_BIT(mod_state->mod));
+    layer_off(mod_state->tempLayer);
 #ifdef CONSOLE_ENABLE
     uprintf("canceled mod: %u\n", get_mods());
 #endif
 }
-void activateMod(uint16_t mod) {
-    register_mods(MOD_BIT(mod));
+void activateMod(oneshot_mod_state *mod_state) {
+    register_mods(MOD_BIT(mod_state->mod));
+    layer_off(mod_state->exitLayer);
+    layer_on(mod_state->tempLayer);
 #ifdef CONSOLE_ENABLE
     uprintf("activated mod %u\n", get_mods());
 #endif
@@ -16,19 +19,18 @@ void activateMod(uint16_t mod) {
 uint32_t cancelOneshotCb(uint32_t trigger_time, void *cb_arg) {
     oneshot_mod_state *mod_state = (oneshot_mod_state *)cb_arg;
     mod_state->state             = os_up_unqueued;
-    cancelMod(mod_state->mod);
+    cancelMod(mod_state);
     return 0;
 }
 
 void update_oneshot(oneshot_mod_state *mod_state, uint16_t trigger, uint16_t keycode, keyrecord_t *record) {
     oneshot_state *state = &(mod_state->state);
-    uint16_t       mod   = mod_state->mod;
 
     if (keycode == trigger) {
         if (record->event.pressed) {
             // Trigger keydown
             if (*state == os_up_unqueued) {
-                activateMod(mod);
+                activateMod(mod_state);
             }
             *state = os_down_unused;
         } else {
@@ -42,7 +44,7 @@ void update_oneshot(oneshot_mod_state *mod_state, uint16_t trigger, uint16_t key
                 case os_down_used:
                     // If we did use the mod while trigger was held, unregister it.
                     *state = os_up_unqueued;
-                    cancelMod(mod);
+                    cancelMod(mod_state);
                     break;
                 default:
                     break;
@@ -56,7 +58,7 @@ void update_oneshot(oneshot_mod_state *mod_state, uint16_t trigger, uint16_t key
             if (is_oneshot_cancel_key(keycode) && *state != os_up_unqueued) {
                 // Cancel oneshot on designated cancel keydown.
                 *state = os_up_unqueued;
-                cancelMod(mod);
+                cancelMod(mod_state);
                 return;
             }
         } else {
@@ -68,7 +70,7 @@ void update_oneshot(oneshot_mod_state *mod_state, uint16_t trigger, uint16_t key
                         break;
                     case os_up_queued:
                         *state = os_up_unqueued;
-                        cancelMod(mod);
+                        cancelMod(mod_state);
                         break;
                     default:
                         break;

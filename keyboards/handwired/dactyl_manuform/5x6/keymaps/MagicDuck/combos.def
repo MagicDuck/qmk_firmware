@@ -2,7 +2,7 @@
 // see: https://blog.gboards.ca/2020/02/adventures-in-obscure-c-features-2020.html
 
 // action keys
-// COMB(esc, KC_ESC, KC_J, KC_K)
+COMB(esc, KC_ESC, KC_J, KC_K)
 
 // /* (  <- dr */ COMB(leftParend, KC_LPRN, KC_D, KC_R)
 // /* )  <- ku */ COMB(rightParend, KC_RPRN, KC_K, KC_U)
