@@ -314,10 +314,10 @@ oneshot_mod_state os_lctrl_state = {.mod = KC_LCTL, .state = os_up_unqueued, .ex
 oneshot_mod_state os_lalt_state  = {.mod = KC_LALT, .state = os_up_unqueued, .exitLayer = NAV_LAYER, .tempLayer = NAV_MODS_LAYER};
 oneshot_mod_state os_lcmd_state  = {.mod = KC_LCMD, .state = os_up_unqueued, .exitLayer = NAV_LAYER, .tempLayer = NAV_MODS_LAYER};
 
-oneshot_mod_state os_rshft_state = {.mod = KC_RSFT, .state = os_up_unqueued, .exitLayer = SYM_LAYER, .tempLayer = SYM_MODS_LAYER};
-oneshot_mod_state os_rctrl_state = {.mod = KC_RCTL, .state = os_up_unqueued, .exitLayer = SYM_LAYER, .tempLayer = SYM_MODS_LAYER};
-oneshot_mod_state os_ralt_state  = {.mod = KC_RALT, .state = os_up_unqueued, .exitLayer = SYM_LAYER, .tempLayer = SYM_MODS_LAYER};
-oneshot_mod_state os_rcmd_state  = {.mod = KC_RCMD, .state = os_up_unqueued, .exitLayer = SYM_LAYER, .tempLayer = SYM_MODS_LAYER};
+oneshot_mod_state os_rshft_state = {.mod = KC_LSFT, .state = os_up_unqueued, .exitLayer = SYM_LAYER, .tempLayer = SYM_MODS_LAYER};
+oneshot_mod_state os_rctrl_state = {.mod = KC_LCTL, .state = os_up_unqueued, .exitLayer = SYM_LAYER, .tempLayer = SYM_MODS_LAYER};
+oneshot_mod_state os_ralt_state  = {.mod = KC_LALT, .state = os_up_unqueued, .exitLayer = SYM_LAYER, .tempLayer = SYM_MODS_LAYER};
+oneshot_mod_state os_rcmd_state  = {.mod = KC_LCMD, .state = os_up_unqueued, .exitLayer = SYM_LAYER, .tempLayer = SYM_MODS_LAYER};
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // window swapper
