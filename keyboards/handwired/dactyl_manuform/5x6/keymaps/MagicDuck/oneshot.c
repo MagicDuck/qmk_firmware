@@ -2,15 +2,12 @@
 
 void cancelMod(oneshot_mod_state *mod_state) {
     unregister_mods(MOD_BIT(mod_state->mod));
-    layer_off(mod_state->tempLayer);
 #ifdef CONSOLE_ENABLE
     uprintf("canceled mod: %u\n", get_mods());
 #endif
 }
 void activateMod(oneshot_mod_state *mod_state) {
     register_mods(MOD_BIT(mod_state->mod));
-    layer_off(mod_state->exitLayer);
-    layer_on(mod_state->tempLayer);
 #ifdef CONSOLE_ENABLE
     uprintf("activated mod %u\n", get_mods());
 #endif
@@ -19,6 +16,7 @@ void activateMod(oneshot_mod_state *mod_state) {
 uint32_t cancelOneshotCb(uint32_t trigger_time, void *cb_arg) {
     oneshot_mod_state *mod_state = (oneshot_mod_state *)cb_arg;
     mod_state->state             = os_up_unqueued;
+    on_before_oneshot_deferred_mod_cancel(mod_state);
     cancelMod(mod_state);
     return 0;
 }
@@ -30,6 +28,8 @@ void update_oneshot(oneshot_mod_state *mod_state, uint16_t trigger, uint16_t key
         if (record->event.pressed) {
             // Trigger keydown
             if (*state == os_up_unqueued) {
+                *state = os_down_unused;
+                on_before_oneshot_mod_activate(mod_state, keycode, record);
                 activateMod(mod_state);
             }
             *state = os_down_unused;
@@ -58,6 +58,7 @@ void update_oneshot(oneshot_mod_state *mod_state, uint16_t trigger, uint16_t key
             if (is_oneshot_cancel_key(keycode) && *state != os_up_unqueued) {
                 // Cancel oneshot on designated cancel keydown.
                 *state = os_up_unqueued;
+                on_before_oneshot_mod_cancel(mod_state, keycode, record);
                 cancelMod(mod_state);
                 return;
             }
@@ -67,9 +68,11 @@ void update_oneshot(oneshot_mod_state *mod_state, uint16_t trigger, uint16_t key
                 switch (*state) {
                     case os_down_unused:
                         *state = os_down_used;
+                        on_before_oneshot_mod_cancel(mod_state, keycode, record);
                         break;
                     case os_up_queued:
                         *state = os_up_unqueued;
+                        on_before_oneshot_mod_cancel(mod_state, keycode, record);
                         cancelMod(mod_state);
                         break;
                     default:

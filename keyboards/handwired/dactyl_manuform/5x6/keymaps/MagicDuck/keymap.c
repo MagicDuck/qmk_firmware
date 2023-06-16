@@ -27,7 +27,8 @@ enum keycodes {
     SW_WIN, // Switch to next window         (cmd-tab)
     SW_TAB, // Switch to next tab            (ctrl-tab)
     REPEAT,
-    CODE_BLK
+    CODE_BLK,
+    CLR_NAV
 };
 
 #define OSM_HYPR OSM(MOD_HYPR)
@@ -91,23 +92,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                   // └────────┴────────┘                                                              └────────┴────────┘
                                       //┌────────┬────────┐                          ┌────────┬────────┐
                                          KC_LSFT, _______,                            _______,  KC_SPC,
-                                         /* _______, _______,                            _______,  KC_SPC, */
                                       //├────────┼────────┼                          ├────────┼────────┼
-                                         /* KC_LCTL, NAV,                                KC_ENT,     KC_LCTL, */
-                                         KC_ESC, NAV,                                SYM,     KC_TAB,
-                                         /* KC_LCTL, NAV,                                KC_RSFT,     KC_LCTL, */
+                                         KC_ESC,  NAV,                                 SYM,     KC_TAB,
                                       //├────────┼────────┼                          ├────────┼────────┼
-                                         KC_ENT, KC_HYPR,                            NUM, KC_LGUI
-                                         /* KC_LGUI, KC_HYPR,                            KC_ENT, KC_LGUI */
-                                         /* KC_LGUI, KC_HYPR,                            KC_HYPR, KC_LGUI */
+                                         KC_ENT,  KC_HYPR,                             NUM,     KC_LGUI
                                       //└────────┴────────┘                          └────────┴────────┘
-                                      // //┌────────┬────────┐                          ┌────────┬────────┐
-                                      //    OSL_LSFT, _______,                            _______,  KC_SPC,
-                                      // //├────────┼────────┼                          ├────────┼────────┼
-                                      //    KC_LCTL, OSL_NAV,                           OSL_SYM, KC_LCTL,
-                                      // //├────────┼────────┼                          ├────────┼────────┼
-                                      //    KC_LGUI, OSL_HYPR,                           KC_LALT, KC_LGUI
-                                      // //└────────┴────────┘                          └────────┴────────┘
   ),
 
   [SYM_LAYER] = LAYOUT_5x6(
@@ -168,9 +157,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                          _______, _______,                            _______, KC_TAB,
                                       //├────────┼────────┼                          ├────────┼────────┼
                                          _______, _______,                            KC_ENT,  _______,
-                                         /* _______, _______,                            _______,  _______, */
                                       //├────────┼────────┼                          ├────────┼────────┼
-                                         _______, _______,                            _______, _______
+                                         _______, CLR_NAV,                            _______, _______
                                       //└────────┴────────┘                          └────────┴────────┘
   ),
 
@@ -191,7 +179,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                      //├────────┼────────┼                          ├────────┼────────┼
                                         _______, _______,                            KC_ENT,  _______,
                                      //├────────┼────────┼                          ├────────┼────────┼
-                                        _______, _______,                            _______, _______
+                                        _______, CLR_NAV,                            _______, _______
                                      //└────────┴────────┘                          └────────┴────────┘
   ),
 
@@ -274,6 +262,43 @@ bool is_oneshot_ignored_key(uint16_t keycode) {
             return false;
     }
 }
+void on_before_oneshot_mod_activate(oneshot_mod_state *mod_state, uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case OS_LSHFT:
+        case OS_LCTRL:
+        case OS_LALT:
+        case OS_LCMD:
+            layer_off(NAV_LAYER);
+            layer_on(NAV_MODS_LAYER);
+            break;
+        case OS_RSHFT:
+        case OS_RCTRL:
+        case OS_RALT:
+        case OS_RCMD:
+            layer_off(SYM_LAYER);
+            layer_on(SYM_MODS_LAYER);
+            break;
+    }
+}
+void on_before_oneshot_mod_cancel(oneshot_mod_state *mod_state, uint16_t keycode, keyrecord_t *record) {
+    layer_off(SYM_MODS_LAYER);
+    layer_off(NAV_MODS_LAYER);
+    if (mod_state->state == os_down_used) {
+        switch (keycode) {
+            case KC_LEFT:
+            case KC_DOWN:
+            case KC_UP:
+            case KC_RGHT:
+                layer_on(NAV_LAYER);
+                break;
+        }
+    }
+}
+
+void on_before_oneshot_deferred_mod_cancel(oneshot_mod_state *mod_state) {
+    layer_off(SYM_MODS_LAYER);
+    layer_off(NAV_MODS_LAYER);
+}
 
 void process_snippets(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) {
@@ -303,21 +328,26 @@ void process_layer(uint16_t keycode, keyrecord_t *record) {
                 layer_off(SYM_MODS_LAYER);
                 layer_off(NAV_MODS_LAYER);
             }
+        case CLR_NAV:
+            if (record->event.pressed) {
+                layer_off(NAV_LAYER);
+                layer_off(NAV_MODS_LAYER);
+            }
     }
 }
 
 bool sw_win_active = false;
 bool sw_tab_active = false;
 
-oneshot_mod_state os_lshft_state = {.mod = KC_LSFT, .state = os_up_unqueued, .exitLayer = NAV_LAYER, .tempLayer = NAV_MODS_LAYER};
-oneshot_mod_state os_lctrl_state = {.mod = KC_LCTL, .state = os_up_unqueued, .exitLayer = NAV_LAYER, .tempLayer = NAV_MODS_LAYER};
-oneshot_mod_state os_lalt_state  = {.mod = KC_LALT, .state = os_up_unqueued, .exitLayer = NAV_LAYER, .tempLayer = NAV_MODS_LAYER};
-oneshot_mod_state os_lcmd_state  = {.mod = KC_LCMD, .state = os_up_unqueued, .exitLayer = NAV_LAYER, .tempLayer = NAV_MODS_LAYER};
+oneshot_mod_state os_lshft_state = {.mod = KC_LSFT, .state = os_up_unqueued};
+oneshot_mod_state os_lctrl_state = {.mod = KC_LCTL, .state = os_up_unqueued};
+oneshot_mod_state os_lalt_state  = {.mod = KC_LALT, .state = os_up_unqueued};
+oneshot_mod_state os_lcmd_state  = {.mod = KC_LCMD, .state = os_up_unqueued};
 
-oneshot_mod_state os_rshft_state = {.mod = KC_LSFT, .state = os_up_unqueued, .exitLayer = SYM_LAYER, .tempLayer = SYM_MODS_LAYER};
-oneshot_mod_state os_rctrl_state = {.mod = KC_LCTL, .state = os_up_unqueued, .exitLayer = SYM_LAYER, .tempLayer = SYM_MODS_LAYER};
-oneshot_mod_state os_ralt_state  = {.mod = KC_LALT, .state = os_up_unqueued, .exitLayer = SYM_LAYER, .tempLayer = SYM_MODS_LAYER};
-oneshot_mod_state os_rcmd_state  = {.mod = KC_LCMD, .state = os_up_unqueued, .exitLayer = SYM_LAYER, .tempLayer = SYM_MODS_LAYER};
+oneshot_mod_state os_rshft_state = {.mod = KC_LSFT, .state = os_up_unqueued};
+oneshot_mod_state os_rctrl_state = {.mod = KC_LCTL, .state = os_up_unqueued};
+oneshot_mod_state os_ralt_state  = {.mod = KC_LALT, .state = os_up_unqueued};
+oneshot_mod_state os_rcmd_state  = {.mod = KC_LCMD, .state = os_up_unqueued};
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // window swapper

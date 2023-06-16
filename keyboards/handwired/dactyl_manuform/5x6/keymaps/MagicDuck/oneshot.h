@@ -13,8 +13,6 @@ typedef enum {
 typedef struct {
     oneshot_state state;
     uint16_t      mod;
-    uint8_t       exitLayer;
-    uint8_t       tempLayer;
 } oneshot_mod_state;
 
 // Custom oneshot mod implementation that doesn't rely on timers. If a mod is
@@ -30,3 +28,8 @@ bool is_oneshot_cancel_key(uint16_t keycode);
 // change keys allows stacking multiple oneshot modifiers, and carrying them
 // between layers.
 bool is_oneshot_ignored_key(uint16_t keycode);
+
+// To be implemented by the consumer. Event handlers
+void on_before_oneshot_mod_activate(oneshot_mod_state *mod_state, uint16_t keycode, keyrecord_t *record);
+void on_before_oneshot_mod_cancel(oneshot_mod_state *mod_state, uint16_t keycode, keyrecord_t *record);
+void on_before_oneshot_deferred_mod_cancel(oneshot_mod_state *mod_state);
